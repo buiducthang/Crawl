@@ -5,6 +5,10 @@
  */
 package crawl;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,25 +69,58 @@ public class YoutubeCrawl {
             driver.get(link);
             
             JavascriptExecutor jse = (JavascriptExecutor)driver;
-            jse.executeScript("window.scrollBy(0,25000)", "");
+            jse.executeScript("window.scrollBy(0, document.body.scrollHeight)", "");
             
             //Button show all comt-reply
-            List<WebElement> btnCmtReplies = driver.findElements(By.xpath("//button[@class='yt-uix-button yt-uix-button-size-default yt-uix-button-default load-more-button yt-uix-load-more comment-replies-renderer-paginator comment-replies-renderer-expander-down yt-uix-button-link']"));
+            /*List<WebElement> btnCmtReplies = driver.findElements(By.xpath("//button[@class='yt-uix-button yt-uix-button-size-default yt-uix-button-default load-more-button yt-uix-load-more comment-replies-renderer-paginator comment-replies-renderer-expander-down yt-uix-button-link']"));
             if(btnCmtReplies.size() > 0)
             {
                 for(WebElement btnCmtReply : btnCmtReplies)
                 {
                     btnCmtReply.click();
+                    //jse.executeScript("window.scrollBy(0, document.body.scrollHeight)", "");
+                }
+               // jse.executeScript("window.scrollBy(document.body.scrollHeight, 0)", "");
+            }*/
+            
+            List<WebElement> btnRemores = driver.findElements(By.xpath("//button[@class='yt-uix-button yt-uix-button-size-default yt-uix-button-link']"));
+            System.out.println("Count: " + btnRemores.size());
+            if(btnRemores.size() > 0)
+            {
+                for(WebElement btnRemore : btnRemores)
+                {
+                    //System.out.println("Attr: " + btnRemore.getText());
+                    if(btnRemore.getText().equals("Read more"))
+                        btnRemore.click();
+                    //jse.executeScript("window.scrollBy(0,25000)", "");
                 }
             }
             
-            List<WebElement> cmtRenders = driver.findElements(By.className("comment-renderer-text"));
-            for(WebElement cmtRender : cmtRenders)
+            try(FileWriter fw = new FileWriter("chuibay.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
             {
-                //Crawl Comment
-                //String cmtRender = cmtRender.getText();
-                System.out.println("Cmt Render: " + cmtRender.getText());
+                //out.println("the text");
+                //more code
+                //out.println("more text");
+                //more code
+                List<WebElement> cmtRenders = driver.findElements(By.className("comment-renderer-text"));
+                if(cmtRenders.size() > 0)
+                {
+                    for(WebElement cmtRender : cmtRenders)
+                    {
+                        //Crawl Comment
+                        //String cmtRender = cmtRender.getText();
+                        System.out.println("Cmt Render: " + cmtRender.getText());
+                        out.println(cmtRender.getText());
+                    }
+                }
+            } catch (IOException e) {
+                //exception handling left as an exercise for the reader
             }
+
+            
+            
         }
     }
     
@@ -135,7 +172,7 @@ public class YoutubeCrawl {
     public static void main(String[] args) {
         YoutubeCrawl ytb = new YoutubeCrawl();
         ytb.invokeBrowser();
-        ytb.search("tôn giáo");
+        ytb.search("chửi bậy");
         ytb.CrawlComment();
     }
     
