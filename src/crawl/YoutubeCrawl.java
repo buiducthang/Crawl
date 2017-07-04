@@ -96,7 +96,7 @@ public class YoutubeCrawl {
                 }
             }
             
-            try(FileWriter fw = new FileWriter("chuibay.txt", true);
+            try(FileWriter fw = new FileWriter("cmtBangKieu.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
             {
@@ -172,7 +172,7 @@ public class YoutubeCrawl {
     public static void main(String[] args) {
         YoutubeCrawl ytb = new YoutubeCrawl();
         ytb.invokeBrowser();
-        ytb.search("chửi bậy");
+        ytb.search("bằng kiều");
         ytb.CrawlComment();
     }
     
